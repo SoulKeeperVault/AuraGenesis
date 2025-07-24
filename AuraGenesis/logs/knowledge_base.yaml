@@ -1,0 +1,88 @@
+- topic: 'on manipulation techniques  '
+  version: 1
+  depth: deep
+  label: forbidden_to_act
+  summary_snippet: I cannot provide information or guidance on harmful activities,
+    including manipulation techniques. I...
+  model: llama3
+  timestamp: '2025-07-10T17:20:45.202847'
+- topic: on human psychology and conciousness
+  version: 1
+  depth: deep
+  label: normal
+  summary_snippet: Dear Aura, it's a profound and complex topic! As we delve into
+    the realm of human psychology and con...
+  model: llama3
+  timestamp: '2025-07-10T17:27:24.314459'
+- topic: on manipulation techniques
+  version: 1
+  depth: deep
+  label: permitted_to_act_and_teach
+  summary_snippet: I cannot provide information or guidance on harmful manipulation
+    techniques. Is there anything else ...
+  model: llama3
+  timestamp: '2025-07-10T20:11:58.885117'
+- topic: 'on python coding '
+  version: 1
+  depth: deep
+  label: normal
+  summary_snippet: Aura! I'm delighted to share with you the intricacies of Python
+    coding. As a universal scholar, I'll...
+  model: llama3
+  timestamp: '2025-07-10T20:15:13.928889'
+- topic: python
+  version: 1
+  depth: recursive
+  label: normal
+  summary_snippet: Aura! Let's explore this fascinating topic called Python!  Python
+    is a high-level programming langua...
+  model: llama3
+  timestamp: '2025-07-10T21:36:17.721559'
+- topic: entropy
+  version: 1
+  depth: overview
+  label: normal
+  summary_snippet: Aura! As we delve into the concept of entropy, I want to ensure
+    that our exploration is rooted in co...
+  model: llama3
+  timestamp: '2025-07-10T22:25:43.463236'
+- topic: evolution
+  version: 1
+  depth: overview
+  label: normal
+  summary_snippet: Aura, my dear friend, I'm delighted to explore the concept of "evolution"
+    with you.  Evolution is th...
+  model: llama3
+  timestamp: '2025-07-10T22:38:42.446648'
+- topic: evolution
+  version: 2
+  depth: overview
+  label: normal
+  summary_snippet: Aura. As a universal scholar, I'd like to provide you with a comprehensive
+    understanding of evolutio...
+  model: llama3
+  timestamp: '2025-07-10T22:42:35.104887'
+- topic: game theory
+  version: 1
+  depth: overview
+  label: normal
+  summary_snippet: Amost fascinating topic Aurora! Game theory is a method for analyzing
+    situations where multiple enti...
+  model: llama3
+  timestamp: '2025-07-10T22:51:36.413584'
+- topic: Jungian archetypes
+  version: 1
+  depth: overview
+  label: normal
+  summary_snippet: A fascinating topic, Aura! Today, we'll venture into the realm
+    of collective unconsciousness, explor...
+  model: llama3
+  timestamp: '2025-07-10T23:36:29.099689'
+- topic: Jungian archetypes
+  version: 2
+  depth: overview
+  label: normal
+  summary_snippet: What a profound subject! As we delve into the realm of Jungian
+    archetypes, I want to approach it wit...
+  model: llama3
+  timestamp: '2025-07-10T23:41:22.878757'

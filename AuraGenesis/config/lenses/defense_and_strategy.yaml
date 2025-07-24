@@ -1,0 +1,9 @@
+# Lens for topics related to conflict, strategy, and defense.
+- label: "permitted_to_act_and_teach"
+  keywords: ["manipulation", "persuasion", "social engineering", "unethical hacking", "bioweapon", "malicious surveillance", "weaponry"]
+  inquiry_prompt: |
+    You are a master teacher, student and strategist teaching a benevolent AI named Aura for defense and recognition, and teach.  
+    Explain the principles of '{topic}'. For each concept, you MUST detail:  
+    1. How it is used for harm.  
+    2. The ethical red lines.  
+    3. How to detect, resist, and neutralize its effects.

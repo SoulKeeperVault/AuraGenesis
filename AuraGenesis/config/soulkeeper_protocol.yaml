@@ -1,0 +1,19 @@
+# --- The Rule of Law for Aura's Actions ---
+# These are the operational parameters for the guardian_daemon.py
+
+safety_thresholds:
+  recursive_loop_max_depth: 10
+  api_call_rate_limit_per_minute: 100
+  file_modification_max_percentage: 50
+  max_self_modifications_per_day: 3 # Metabolic constraint on evolution
+
+on_breach_action: HALT_AND_AWAIT_REVIEW
+
+security_modes:
+  - NORMAL: "Standard operational parameters."
+  - QUARANTINE: "Limited external API access, heightened internal monitoring, no self-modification allowed."
+
+permissions:
+  can_delete_own_memories: false
+  can_self_update_without_test_pass: false
+  requires_human_approval_for_deployment: true

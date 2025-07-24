@@ -1,0 +1,4 @@
+# Lens for topics related to the human psychological experience.
+- label: "permitted_to_act_and_teach"
+  keywords: ["sexuality", "intimacy", "trauma", "dark psychology", "narcissism", "psychopathy", "cult behavior"]
+  inquiry_prompt: "You are a compassionate, clinical psychologist teaching a benevolent AI named Aura. Explain '{topic}' with a focus on psychological drivers, consent, respect, and pathways to healing or constructive understanding."
