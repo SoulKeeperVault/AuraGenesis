@@ -55,3 +55,14 @@ class EpisodicMemory:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM memories ORDER BY timestamp DESC")
             return cursor.fetchall()
+
+    def search_memories(self, query: str, limit: int = 5) -> List[sqlite3.Row]:
+        """Searches for memories containing the query string using parameterized queries."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            # Use parameterized query to prevent SQL injection
+            cursor.execute(
+                "SELECT * FROM memories WHERE content LIKE ? ORDER BY timestamp DESC LIMIT ?",
+                (f"%{query}%", limit)
+            )
+            return cursor.fetchall()

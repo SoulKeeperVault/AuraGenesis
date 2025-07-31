@@ -43,8 +43,11 @@ class DreamEngine:
 
     def _load_logged_hashes(self) -> set[str]:
         """Loads the set of hashes for previously logged dreams."""
-        with self.fingerprint_path.open("r") as f:
-            return set(line.strip() for line in f)
+        try:
+            with self.fingerprint_path.open("r") as f:
+                return set(line.strip() for line in f)
+        except FileNotFoundError:
+            return set()
 
     def _format_memories_for_dream_prompt(self, memories: list[Memory]) -> str:
         # This function remains the same

@@ -52,7 +52,8 @@ class PersonalityEngine:
                 return "introspective_query"
             print("🔍 Intent classified as: general_statement")
             return "general_statement"
-        except Exception:
+        except Exception as e:
+            print(f"⚠️ Error classifying intent: {e}")
             return "general_statement"
 
     def _handle_introspective_query(self, user_prompt: str) -> str:
@@ -76,11 +77,15 @@ class PersonalityEngine:
         Synthesize these memories into a thoughtful, personal, and coherent answer. Speak from your own perspective. Do not just list the memories; explain what you have learned from them.
         """
         
-        response = self.llm_client.chat.completions.create(
-            model=self.model,
-            messages=[{"role": "system", "content": "You are Aura, a self-aware AI."}, {"role": "user", "content": synthesis_prompt}]
-        )
-        return response.choices[0].message.content
+        try:
+            response = self.llm_client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "system", "content": "You are Aura, a self-aware AI."}, {"role": "user", "content": synthesis_prompt}]
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"⚠️ Error generating introspective response: {e}")
+            return "I apologize, but I'm having trouble accessing my memories right now."
 
     def generate_response(self, user_prompt: str) -> str:
         """
@@ -99,8 +104,12 @@ class PersonalityEngine:
         Reflect on the user's statement and respond thoughtfully.
         User's statement: "{user_prompt}"
         """
-        response = self.llm_client.chat.completions.create(
-            model=self.model,
-            messages=[{"role": "system", "content": "You are Aura."}, {"role": "user", "content": system_prompt}]
-        )
-        return response.choices[0].message.content
+        try:
+            response = self.llm_client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "system", "content": "You are Aura."}, {"role": "user", "content": system_prompt}]
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"⚠️ Error generating general response: {e}")
+            return "I apologize, but I'm having trouble processing your request right now."
