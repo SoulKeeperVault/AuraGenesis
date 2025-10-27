@@ -39,17 +39,16 @@ class MemoryManager:
     def search_memories(self, query: str, limit: int = 5) -> list[Memory]:
         """
         Searches for memories containing a specific query string.
-        A simple keyword search for now; will be upgraded to vector search later.
+        Uses parameterized queries to prevent SQL injection.
         """
         print(f"🔎 Searching memories for '{query}'...")
-        all_memories = self.storage.get_all_memories() # This is the list of sqlite3.Row objects
         
-        # Filter memories based on the query
-        matching_rows = [row for row in all_memories if query.lower() in row['content'].lower()]
-
+        # Use the storage engine's search method with proper parameterization
+        matching_rows = self.storage.search_memories(query, limit)
+        
         # Convert matching rows back into Pydantic Memory objects
         matching_memories = []
-        for row in matching_rows[:limit]:
+        for row in matching_rows:
             memory_data = dict(row)
             tags_str = memory_data.get('emotional_tags', '')
             memory_data['emotional_tags'] = tags_str.split(',') if tags_str else []
