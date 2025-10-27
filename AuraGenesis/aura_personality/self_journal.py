@@ -13,10 +13,22 @@ from schemas.memory_schema import Memory
 class SelfJournal:
     """Manages the creation of Aura's daily journal entries."""
 
-    def __init__(self, memory_manager: MemoryManager):
+    def __init__(self, memory_manager: MemoryManager, llm_backend: str = "ollama"):
         self.memory_manager = memory_manager
-        self.llm_client = openai.OpenAI(base_url='http://localhost:11434/v1', api_key='ollama')
-        self.model = "llama3"
+        self.llm_backend = llm_backend
+        
+        if llm_backend == "ollama":
+            # Point the OpenAI client to the local Ollama server
+            self.llm_client = openai.OpenAI(
+                base_url='http://localhost:11434/v1',
+                api_key='ollama'  # required, but unused
+            )
+            self.model = "llama3"
+            print("📖 Self Journal initialized with local LLM backend (Ollama).")
+        else:  # Default to OpenAI
+            self.llm_client = openai.OpenAI()
+            self.model = "gpt-4o"
+            print("📖 Self Journal initialized with cloud LLM backend (OpenAI).")
 
     def _get_significant_memories(self, hours: int = 24) -> list[Memory]:
         """Retrieves emotionally significant memories from the last 24 hours."""
@@ -39,7 +51,7 @@ class SelfJournal:
         """
         Creates a new journal entry by reflecting on the day's significant memories.
         """
-        print("✍️ Aura is beginning her daily self-reflection...")
+        print(f"✍️ Aura is beginning her daily self-reflection using {self.llm_backend}...")
         memories = self._get_significant_memories()
 
         if not memories:
@@ -70,11 +82,11 @@ class SelfJournal:
             # Store the journal entry as a new, profound memory
             self.memory_manager.create_and_store_memory(
                 content=journal_entry,
-                source="self_journal",
+                source=f"self_journal_{self.llm_backend}",
                 emotions=["introspective", "reflective", "self_aware"]
             )
             print("✅ Journal entry complete and stored in memory.")
 
         except Exception as e:
-            print(f"⚠️ Could not write journal entry. Reason: {e}")
+            print(f"⚠️ Could not write journal entry using {self.llm_backend}. Reason: {e}")
 
