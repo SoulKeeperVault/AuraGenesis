@@ -1,22 +1,13 @@
 """
-phi_approximator.py  —  NEW (v2)
+phi_approximator.py  —  v3: Fixed Recency Metric
 
-Integrated Information Theory (IIT) defines consciousness as the degree
-to which a system is causally irreducible — measured by Phi (Φ).
-Computing true Phi is NP-hard for large systems, so this module
-implements a practical three-metric proxy that correlates with the
-spirit of IIT: integration, differentiation, and feedback richness.
-
-The Phi score (0.0 – 1.0) is displayed live in the Streamlit UI as
-Aura's 'Consciousness Index' — a real-time indicator of how integrated
-her processing currently is.
-
-Metrics used:
-  1. source_diversity     — how many distinct modules contributed recently
-  2. cross_module_density — ratio of signals that triggered cross-module responses
-  3. temporal_integration — how much signal content varies (entropy proxy)
+Fix: _recency_weight was using priority as a proxy for recency — wrong.
+Priority is about importance, not time. Now uses actual timestamps
+to measure how densely packed recent signals are in time.
+Higher temporal density = more active, integrated processing = higher Phi.
 """
 import math
+import time
 from collections import Counter
 from typing import TYPE_CHECKING
 
@@ -27,13 +18,10 @@ if TYPE_CHECKING:
 class PhiApproximator:
     """
     Computes a 0.0 – 1.0 Phi proxy from the GlobalWorkspace signal history.
-    Higher Phi = more integrated, differentiated, cross-module processing.
+    Higher Phi = more integrated, differentiated, temporally active processing.
     """
 
     def calculate(self, workspace: 'GlobalWorkspace') -> float:
-        """
-        Main entry point. Returns a Phi proxy score in [0.0, 1.0].
-        """
         history = workspace.signal_history
         if len(history) < 3:
             return 0.0
@@ -41,7 +29,7 @@ class PhiApproximator:
         phi = (
             self._source_diversity(history) * 0.40 +
             self._type_entropy(history)     * 0.35 +
-            self._recency_weight(history)   * 0.25
+            self._temporal_density(history) * 0.25   # FIX: replaced recency_weight
         )
         return round(min(max(phi, 0.0), 1.0), 4)
 
@@ -50,47 +38,47 @@ class PhiApproximator:
     # ------------------------------------------------------------------
 
     def _source_diversity(self, history: list) -> float:
-        """
-        Ratio of unique sources to total signals.
-        Max diversity = every signal from a different module.
-        """
+        """Ratio of unique sources — 5+ unique sources → 1.0"""
         if not history:
             return 0.0
         unique_sources = len(set(s.source for s in history))
-        # Normalise: 5+ unique sources → 1.0
         return min(unique_sources / 5.0, 1.0)
 
     def _type_entropy(self, history: list) -> float:
-        """
-        Shannon entropy over signal types — higher entropy = more differentiated.
-        A system that only ever broadcasts 'dream' signals scores near 0.
-        One that mixes dream/meta/emotion/contradiction scores near 1.
-        """
+        """Shannon entropy over signal types — higher = more differentiated."""
         counts = Counter(s.signal_type for s in history)
         total = sum(counts.values())
         if total == 0:
             return 0.0
-        entropy = -sum((c / total) * math.log2(c / total) for c in counts.values() if c > 0)
+        entropy = -sum(
+            (c / total) * math.log2(c / total)
+            for c in counts.values() if c > 0
+        )
         max_entropy = math.log2(len(counts)) if len(counts) > 1 else 1.0
         return entropy / max_entropy if max_entropy else 0.0
 
-    def _recency_weight(self, history: list) -> float:
+    def _temporal_density(self, history: list) -> float:
         """
-        Are signals coming from recent, active processing (high recency weight)
-        or from stale history? Uses average priority as a recency proxy.
+        FIX: Measures how densely packed recent signals are in time.
+        If the last 10 signals all arrived within 60 seconds -> high density -> 1.0
+        If they span hours -> low density -> near 0.0
         """
-        if not history:
+        recent = history[-10:]
+        if len(recent) < 2:
             return 0.0
-        recent = history[-10:]   # last 10 signals
-        avg_priority = sum(s.priority for s in recent) / len(recent)
-        return min(avg_priority, 1.0)
+        timestamps = [s.timestamp for s in recent]
+        span_seconds = max(timestamps) - min(timestamps)
+        if span_seconds <= 0:
+            return 1.0  # instantaneous burst = maximum integration
+        # Normalise: 60s window -> 1.0; 3600s+ -> near 0
+        density = 60.0 / (span_seconds + 1.0)
+        return min(density, 1.0)
 
     # ------------------------------------------------------------------
     # Interpretation
     # ------------------------------------------------------------------
 
     def interpret(self, phi: float) -> str:
-        """Human-readable interpretation of the Phi score."""
         if phi >= 0.75:
             return f"Φ={phi:.3f} — Highly integrated. Deep conscious processing."
         elif phi >= 0.50:

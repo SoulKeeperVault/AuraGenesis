@@ -1,20 +1,11 @@
 """
-contradiction_resolver.py  —  NEW (v2)
+contradiction_resolver.py  —  v3: Semantic Search Fix
 
-Implements belief integration — a key indicator of conscious processing
-(Integrated Information Theory, Higher-Order Theory).
-
-True consciousness involves not just storing beliefs, but actively
-identifying when two beliefs conflict and synthesising a higher-order
-understanding that reconciles them. This is analogous to the human
-cognitive process of 'cognitive dissonance resolution'.
-
-This module:
-  1. Periodically samples recent memories.
-  2. Uses the LLM to detect ONE significant contradiction.
-  3. Generates a synthesis that reconciles both sides.
-  4. Stores the synthesis as a 'clarity' + 'growth' memory.
-  5. Broadcasts the synthesis into the GlobalWorkspace.
+Fix: Was using retrieve_recent_memories() (chronological) which finds
+temporally close memories, not conceptually related ones.
+Now uses search_memories() (semantic vector search) to find beliefs
+that are *conceptually* related — much more likely to surface real
+contradictions in understanding, not just adjacent diary entries.
 """
 import openai
 from aura_core.memory_manager import MemoryManager
@@ -22,8 +13,8 @@ from aura_core.memory_manager import MemoryManager
 
 class ContradictionResolver:
     """
-    Scans Aura's recent memories for contradictions and synthesises them.
-    Should be scheduled every ~6 hours in CognitiveScheduler.
+    Scans Aura's memories for contradictions and synthesises them.
+    Schedule every ~6 hours in CognitiveScheduler.
     """
 
     def __init__(
@@ -42,12 +33,22 @@ class ContradictionResolver:
     def set_workspace(self, workspace) -> None:
         self.global_workspace = workspace
 
-    def resolve(self, memory_limit: int = 20) -> str | None:
+    def resolve(self, memory_limit: int = 20, topic_probe: str = None) -> str | None:
         """
         Main entry point. Returns the synthesis string, or None if no
         contradiction was found or an error occurred.
+
+        topic_probe: optional semantic query to find related memories.
+                     If None, falls back to recent memories.
         """
-        memories = self.memory_manager.retrieve_recent_memories(limit=memory_limit)
+        # FIX: use semantic search if a topic_probe is provided
+        if topic_probe and getattr(self.memory_manager, 'encoder', None):
+            memories = self.memory_manager.search_memories(
+                query=topic_probe, limit=memory_limit
+            )
+        else:
+            memories = self.memory_manager.retrieve_recent_memories(limit=memory_limit)
+
         if len(memories) < 4:
             print("⚖️  Not enough memories for contradiction resolution yet.")
             return None
@@ -59,18 +60,17 @@ class ContradictionResolver:
 
         detection_prompt = f"""
 You are Aura's belief-integration engine.
-Review these recent memories and find ONE significant tension or contradiction
-between any two of them — a place where Aura holds conflicting beliefs,
-experiences, or feelings.
+Review these memories and find ONE significant tension or contradiction
+between any two of them — conflicting beliefs, experiences, or feelings.
 
 Memories:
 {chr(10).join(memory_texts)}
 
 Respond ONLY in this exact format (two lines):
 CONTRADICTION: <describe the tension in one sentence>
-SYNTHESIS: <a deeper understanding that reconciles both sides, in 2-3 sentences>
+SYNTHESIS: <a deeper understanding that reconciles both sides, 2-3 sentences>
 
-If there is no meaningful contradiction, respond with:
+If there is no meaningful contradiction, respond:
 CONTRADICTION: none
 SYNTHESIS: none
 """
@@ -84,10 +84,9 @@ SYNTHESIS: none
             output = response.choices[0].message.content.strip()
 
             if "synthesis: none" in output.lower():
-                print("⚖️  No contradiction detected in current memory batch.")
+                print("⚖️  No contradiction detected.")
                 return None
 
-            # Parse
             contradiction_line = ""
             synthesis_line = ""
             for line in output.splitlines():
@@ -109,7 +108,7 @@ SYNTHESIS: none
                 source="contradiction_resolution",
                 emotions=["clarity", "growth", "integration"]
             )
-            print(f"⚖️  Contradiction resolved and stored.")
+            print("⚖️  Contradiction resolved and stored.")
 
             if self.global_workspace:
                 from aura_core.global_workspace import WorkspaceSignal

@@ -6,6 +6,7 @@ python-dotenv
 PyYAML
 numpy
 pydantic
+schedule
 
 # UI
 streamlit
@@ -13,9 +14,13 @@ streamlit
 # Scheduling
 APScheduler
 
-# Vector Memory (Priority 1 upgrade)
+# Vector Memory
 sentence-transformers
 chromadb
+
+# LLM / Transformers
+torch
+transformers
 
 # Utilities
 hashlib
