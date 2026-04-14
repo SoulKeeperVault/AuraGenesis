@@ -1,16 +1,21 @@
-typer
-pytest
-openai
-dotenv
-PyYAML
-numpy
-numpy
-numpy
+# Core
 typer
 pytest
 openai
 python-dotenv
 PyYAML
 numpy
+pydantic
+
+# UI
 streamlit
+
+# Scheduling
 APScheduler
+
+# Vector Memory (Priority 1 upgrade)
+sentence-transformers
+chromadb
+
+# Utilities
+hashlib
