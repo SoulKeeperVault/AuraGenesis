@@ -1,0 +1,24 @@
+# ── AuraGenesis ruff configuration ────────────────────────────────────────
+# ruff is our linter (see .github/workflows/ci.yml).
+# Rules ignored globally are documented here with reasons.
+
+[lint]
+ignore = [
+    "E501",   # line too long — research/AI code has long strings; enforced by black if needed
+    "F401",   # unused imports — some are intentional lazy/conditional imports
+    "F841",   # local variable assigned but never used — legitimately used in
+              # `except Exception as e:` fallback blocks where e is logged or swallowed
+]
+
+# Target Python 3.10+ (project minimum)
+target-version = "py310"
+
+# Run on the main package only
+include = ["AuraGenesis/**/*.py"]
+exclude = [
+    "__pycache__",
+    ".venv",
+    "venv",
+    "dist",
+    "build",
+]

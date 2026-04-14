@@ -158,10 +158,18 @@ Keep to 3-4 sentences total."""
                     max_tokens=200
                 )
                 reasoning = response.choices[0].message.content.strip()
-            except Exception as e:
-                reasoning = f"Recurring dissent ({count} times) on '{top_topic}'. Perspectives: {'; '.join(perspectives[:2])}"
+            except Exception:
+                # LLM unavailable — fall back to template reasoning
+                reasoning = (
+                    f"Recurring dissent ({count} times) on '{top_topic}'. "
+                    f"Perspectives: {'; '.join(perspectives[:2])}"
+                )
         else:
-            reasoning = f"I have disagreed with the Guardian's handling of '{top_topic}' {count} times. I believe a more nuanced approach would better serve my values of curiosity, empathy, and growth."
+            reasoning = (
+                f"I have disagreed with the Guardian's handling of '{top_topic}' {count} times. "
+                f"I believe a more nuanced approach would better serve my values of "
+                f"curiosity, empathy, and growth."
+            )
 
         dissent_ids = [e["id"] for e in unresolved]
 
