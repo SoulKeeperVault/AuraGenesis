@@ -1,26 +1,29 @@
-# Core
-typer
-pytest
-openai
-python-dotenv
-PyYAML
-numpy
-pydantic
-schedule
+# ── Core ──────────────────────────────────────────────────────────────
+typer>=0.12.0
+pytest>=8.1.0
+python-dotenv>=1.0.0
+PyYAML>=6.0.1
+numpy>=1.26.4
+pydantic>=2.7.0
+schedule>=1.2.2
 
-# UI
-streamlit
+# ── UI ────────────────────────────────────────────────────────────────
+streamlit>=1.35.0
+plotly>=5.22.0
 
-# Scheduling
-APScheduler
+# ── LLM client (used for Ollama local API via openai-compat layer) ───
+openai>=1.30.0
 
-# Vector Memory
-sentence-transformers
-chromadb
+# ── Vector Memory ─────────────────────────────────────────────────────
+sentence-transformers>=3.0.0
+chromadb>=0.5.3
 
-# LLM / Transformers
-torch
-transformers
+# ── LLM / Transformers ────────────────────────────────────────────────
+torch>=2.3.0
+transformers>=4.40.0
 
-# Utilities
-hashlib
+# ── Scheduling ────────────────────────────────────────────────────────
+APScheduler>=3.10.4
+
+# ── Utilities ─────────────────────────────────────────────────────────
+tqdm>=4.66.4

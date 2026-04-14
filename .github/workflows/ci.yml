@@ -1,0 +1,46 @@
+# ── AuraGenesis GitHub Actions CI ─────────────────────────────────────
+# Runs on every push and pull request to main.
+# Jobs:
+#   1. lint  — ruff linter (fast, no install of heavy deps)
+#   2. test  — pytest on the lightweight unit tests (no Ollama needed)
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install ruff
+        run: pip install ruff
+      - name: Run ruff
+        run: ruff check AuraGenesis/ --ignore E501,F401
+        # E501 = line too long (fine for research code)
+        # F401 = unused imports (some are intentional lazy imports)
+
+  test:
+    name: Unit Tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install lightweight deps only
+        run: |
+          pip install pytest pyyaml pydantic numpy
+          # Heavy deps (torch, chromadb, streamlit) skipped in CI
+          # Tests are written to not require them
+      - name: Run tests
+        working-directory: AuraGenesis
+        run: pytest tests/ -v --tb=short

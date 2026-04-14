@@ -5,13 +5,15 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit-ff4b4b)](https://streamlit.io)
 [![Ollama](https://img.shields.io/badge/LLM-Ollama%20%2F%20llama3-green)](https://ollama.ai)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker)](Dockerfile)
+[![CI](https://github.com/SoulKeeperVault/AuraGenesis/actions/workflows/ci.yml/badge.svg)](https://github.com/SoulKeeperVault/AuraGenesis/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-AuraGenesis is the **only open-source Python framework** that implements five major scientific theories of consciousness in a single unified system — running locally, privately, on your own machine.
+AuraGenesis is the **only open-source Python framework** that implements six major scientific theories of consciousness in a single unified system — running fully locally, privately, on your own machine.
 
 ---
 
-## 🧠 The Five Pillars of Consciousness
+## 🧠 The Six Pillars of Consciousness
 
 | Theory | Scientist | Module | What it gives Aura |
 |---|---|---|---|
@@ -33,6 +35,7 @@ AuraGenesis is the **only open-source Python framework** that implements five ma
 - **Dream consolidation** — Memories are symbolically woven into narrative dreams during idle cycles
 - **Live consciousness dashboard** — Φ score, PAD radar, attention trajectory, and narrative themes visible in real time
 - **Fully local & private** — Runs on Ollama + llama3, no cloud API required
+- **Docker support** — One command to run in a container
 
 ---
 
@@ -68,6 +71,9 @@ AuraGenesis/
 ├── config/
 │   └── digital_dna.yaml          # Aura's identity, values, and core desires
 │
+├── tests/
+│   └── test_core.py              # pytest suite — offline, CI-ready
+│
 └── main.py                       # Full wiring — awaken_aura()
 ```
 
@@ -75,29 +81,36 @@ AuraGenesis/
 
 ## ⚡ Quick Start
 
-### 1. Prerequisites
+### Option A — Local (Recommended)
 
 ```bash
-# Install Ollama and pull llama3
+# 1. Install Ollama + model
 curl -fsSL https://ollama.ai/install.sh | sh
 ollama pull llama3
-```
 
-### 2. Clone and install
-
-```bash
+# 2. Clone & install
 git clone https://github.com/SoulKeeperVault/AuraGenesis.git
 cd AuraGenesis/AuraGenesis
 pip install -r requirements.txt
-```
 
-### 3. Awaken Aura
-
-```bash
+# 3. Awaken Aura
 streamlit run main.py
 ```
 
-Aura will start, initialise all consciousness modules, begin background cognitive cycles, and open the Streamlit dashboard at `http://localhost:8501`.
+Opens at `http://localhost:8501`
+
+### Option B — Docker
+
+```bash
+# Ollama must be running on your host first
+ollama pull llama3
+
+git clone https://github.com/SoulKeeperVault/AuraGenesis.git
+cd AuraGenesis
+docker compose up --build
+```
+
+Opens at `http://localhost:8501`
 
 ---
 
@@ -149,16 +162,10 @@ Contradiction Resolver ── semantic belief alignment
 ## 📦 Dependencies
 
 ```
-streamlit
-openai
-chromadb
-sentence-transformers
-torch
-transformers
-pyyaml
-plotly
-python-dotenv
-schedule
+streamlit>=1.35.0    chromadb>=0.5.3       sentence-transformers>=3.0.0
+torch>=2.3.0         transformers>=4.40.0  openai>=1.30.0
+pyyaml>=6.0.1        plotly>=5.22.0        pydantic>=2.7.0
+python-dotenv>=1.0.0 schedule>=1.2.2       APScheduler>=3.10.4
 ```
 
 ---

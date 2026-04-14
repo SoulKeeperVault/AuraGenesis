@@ -1,0 +1,29 @@
+# ── AuraGenesis Docker Compose ────────────────────────────────────────
+# Prerequisites:
+#   1. Ollama running on your host: `ollama serve`
+#   2. llama3 pulled: `ollama pull llama3`
+#
+# Usage:
+#   docker compose up --build
+#   Open: http://localhost:8501
+
+version: '3.8'
+
+services:
+  aura:
+    build: .
+    container_name: aura_genesis
+    ports:
+      - "8501:8501"
+    volumes:
+      # Persist Aura's memory database and config across restarts
+      - ./AuraGenesis/aura_memory.db:/app/AuraGenesis/aura_memory.db
+      - ./AuraGenesis/config:/app/AuraGenesis/config
+      - ./AuraGenesis/logs:/app/AuraGenesis/logs
+    environment:
+      # Points Aura at the Ollama server running on your host machine
+      - OLLAMA_HOST=http://host.docker.internal:11434
+    extra_hosts:
+      # Required on Linux hosts (Docker Desktop handles this automatically)
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
