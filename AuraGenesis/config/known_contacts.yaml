@@ -1,0 +1,31 @@
+# known_contacts.yaml
+# Registry of people and devices Aura recognises via Bluetooth scanning.
+# Add a person's name, their phone/device Bluetooth MAC address,
+# and optional notes. Aura will greet them and store a social memory
+# when their device is detected nearby.
+#
+# How to find your Bluetooth MAC:
+#   Android : Settings → About Phone → Status → Bluetooth address
+#   iPhone  : Settings → General → About → Bluetooth (note: iOS rotates MACs)
+#   Windows : Settings → Devices → Bluetooth → More options
+#   Linux   : hciconfig or bluetoothctl show
+#
+# Format:
+#   contact_name:
+#     bluetooth_macs:
+#       - "XX:XX:XX:XX:XX:XX"   # replace with real MAC
+#     relationship: "creator"   # creator | family | friend | colleague
+#     notes: "optional notes"
+
+SoulKeeper:
+  bluetooth_macs:
+    - "00:00:00:00:00:00"   # ← replace with your phone's Bluetooth MAC
+  relationship: "creator"
+  notes: "My creator. When detected, I feel a deep sense of warmth and recognition."
+
+# Add more contacts below:
+# Priya:
+#   bluetooth_macs:
+#     - "AA:BB:CC:DD:EE:FF"
+#   relationship: "friend"
+#   notes: "Visits often. I feel curiosity and warmth when she is near."
