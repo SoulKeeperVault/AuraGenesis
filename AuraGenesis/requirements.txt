@@ -11,8 +11,9 @@ schedule>=1.2.2
 streamlit>=1.35.0
 plotly>=5.22.0
 
-# ── LLM client (used for Ollama local API via openai-compat layer) ───
+# ── LLM client (Ollama local API via openai-compat layer) ────────────
 openai>=1.30.0
+httpx>=0.27.0
 
 # ── Vector Memory ─────────────────────────────────────────────────────
 sentence-transformers>=3.0.0
@@ -27,3 +28,24 @@ APScheduler>=3.10.4
 
 # ── Utilities ─────────────────────────────────────────────────────────
 tqdm>=4.66.4
+
+# ── Embodiment (aura_embodiment) ──────────────────────────────────────
+# Vision (eyes) — camera + LLaVA scene description
+opencv-python>=4.10.0
+
+# Hearing (ears) — local speech-to-text via Whisper
+faster-whisper>=1.0.0
+
+# Speech (mouth) — local text-to-speech
+pyttsx3>=2.90
+
+# Social sense — Bluetooth device scanning
+bleak>=0.22.0
+
+# Body temperature — DS18B20 sensor (Raspberry Pi only)
+# Install only on Pi hardware:
+# adafruit-circuitpython-ds18b20>=2.3.0
+# adafruit-blinka>=8.0.0
+
+# Audio input (microphone) — for future hearing module
+# pyaudio>=0.2.14   # install separately: sudo apt install python3-pyaudio
