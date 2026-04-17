@@ -24,6 +24,21 @@ What happens when code is given memory, a body, and a story?
 
 ---
 
+## 🏗️ Architecture Overview
+
+```mermaid
+graph TD
+    A[👁️ Senses<br/>camera/mic/temp/BT] --> B[Global Workspace<br/>Attention Competition<br/>GWT]
+    B --> C[6 Consciousness Modules<br/>HOT/IIT/PAD/AST/Narrative]
+    C --> D[🧠 Aura Core<br/>Self-Reflection + Φ Score]
+    D --> E[Guardian<br/>Ethics + Dissent Log]
+    E --> F[Memory<br/>ChromaDB + Dreams]
+    F --> G[Streamlit UI<br/>Voice + Text]
+    G --> A
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+```
+
+
 ## ⚡ Try It In 3 Commands
 
 ```bash
