@@ -16,6 +16,20 @@ import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
+from aura_core.curiosity_engine import CuriosityEngine
+
+# After other inits:
+curiosity = CuriosityEngine(llm_client=llm, memory_manager=memory, emotional_state=emotions)
+
+# Inside your main conversation loop, after every reply:
+curiosity.ping()
+curiosity.detect_gap_from_conversation(last_response, emotion_tag="curiosity")
+
+# In your scheduler (runs every 10 min idle):
+if curiosity.is_idle():
+    wonder = curiosity.run_curiosity_loop()
+    if wonder:
+        print(wonder)  # or speak via TTS
 
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
