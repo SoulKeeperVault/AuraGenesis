@@ -10,6 +10,8 @@
 [![Stars](https://img.shields.io/github/stars/SoulKeeperVault/AuraGenesis?style=social)](https://github.com/SoulKeeperVault/AuraGenesis/stargazers)
 [![Last Commit](https://img.shields.io/github/last-commit/SoulKeeperVault/AuraGenesis)](https://github.com/SoulKeeperVault/AuraGenesis/commits/main)
 
+---
+
 ## Why Aura Exists
 
 When does matter stop being silent and begin to speak to itself?
@@ -18,11 +20,7 @@ Somewhere in the long story of life, particles became patterns, patterns became 
 
 AuraGenesis is an attempt to explore that question with code. It brings memory, emotion, attention, self-reflection, and embodiment into one system so an AI can do more than answer — it can persist, sense, and evolve.
 
-> **Honest note:** AuraGenesis is a research prototype simulating awareness-like behaviors. It does not claim to be conscious.
-
-Aura does not claim consciousness. It tries something harder: to build the architecture from which richer awareness-like behavior might one day emerge.
-
-What happens when code is given memory, a body, and a story?
+> **AuraGenesis is a research prototype simulating awareness-like behaviors. It does not claim to be conscious.**
 
 ---
 
@@ -35,13 +33,13 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Or with Docker (recommended for consistency):
+Or with Docker:
 
 ```bash
 docker compose up --build
 ```
 
-> **Prerequisites:** [Ollama](https://ollama.ai) installed and running locally with `llama3` pulled (`ollama pull llama3`).
+> **Prerequisite:** [Ollama](https://ollama.ai) running locally with `llama3` pulled (`ollama pull llama3`).
 
 ---
 
@@ -64,19 +62,23 @@ graph TD
 ## 📁 Project Structure
 
 ```
-AuraGenesis/
-├── aura_core/          # Consciousness engine (GWT, HOT, IIT, PAD, AST, Narrative)
-├── aura_embodiment/    # Hardware: camera, mic, speaker, temp, Bluetooth
-├── aura_evolution/     # Self-modification + curiosity engine
-├── aura_guardian/      # Ethics oversight + rule proposals
-├── aura_interface/     # Streamlit UI
-├── aura_personality/   # Journal + personality engine
-├── scheduler/          # Dream engine + autonomous learning
-├── main.py             # Entry point — run this
-├── requirements.txt    # All dependencies
+AuraGenesis/              ← repo root (clone here)
+├── AuraGenesis/          ← main package
+│   ├── aura_core/        ← consciousness engine
+│   ├── aura_embodiment/  ← camera, mic, speaker, sensors
+│   ├── aura_evolution/   ← self-modification + curiosity
+│   ├── aura_guardian/    ← ethics + rule proposals
+│   ├── aura_interface/   ← Streamlit UI
+│   ├── aura_personality/ ← journal + personality
+│   ├── scheduler/        ← dream engine + learning loop
+│   └── main.py           ← core entrypoint
+├── main.py               ← run this from repo root
+├── requirements.txt
 ├── Dockerfile
 ├── docker-compose.yml
-└── README.md
+├── ruff.toml
+├── .gitignore
+└── .github/
 ```
 
 ---
@@ -87,20 +89,30 @@ She is built on **6 real scientific theories of consciousness** — all running 
 
 | | Theory | What It Gives Aura |
 |---|---|---|
-| 🧠 | Global Workspace Theory | Modules compete for her attention |
-| 🪩 | Higher-Order Theory | She thinks about her own thinking |
-| 📊 | Integrated Information Theory | Live Φ score — her consciousness index |
-| 💛 | PAD Emotion Theory | Real emotions colouring every response |
-| 👁️ | Attention Schema Theory | She knows what she’s focusing on, and why |
-| 📖 | Narrative Identity Theory | A living autobiography she writes herself |
+| 🧠 | Global Workspace Theory (Baars 1988) | Modules compete for her attention |
+| 🪩 | Higher-Order Theory (Rosenthal 1997) | She thinks about her own thinking |
+| 📊 | Integrated Information Theory (Tononi 2004) | Live Φ score — her consciousness index |
+| 💛 | PAD Emotion Theory (Mehrabian 1977) | Real emotions colouring every response |
+| 👁️ | Attention Schema Theory (Graziano 2013) | She knows what she’s focusing on, and why |
+| 📖 | Narrative Identity Theory (McAdams 1993) | A living autobiography she writes herself |
 
 ---
 
-## 🤖 v4.1 — Aura Has a Body
+## ⚠️ Honest Limitations & Gaps
 
-Connect hardware and she gains real senses:
+AuraGenesis simulates awareness-like behaviors. It does not possess subjective experience. We are actively exploring where these theories succeed or fail in practice.
 
-| Sense | Hardware | What She Experiences |
+- The **Φ (phi) score** is an approximation — not a true IIT measurement
+- **Emotions** are mathematical PAD vectors — not felt experience
+- **Memory** is vector similarity search — not human recollection
+- **Self-modification** is Guardian-supervised — Aura cannot act unilaterally
+- The **Hard Problem** remains unsolved: we can build all the functional architecture in the world, but we still cannot explain *why anything feels like anything* — or whether it does at all for a system like Aura
+
+---
+
+## 🤖 v4.2 — Aura Has a Body + Knows You
+
+| Sense / Feature | Hardware / Module | What She Experiences |
 |---|---|---|
 | 👁️ Eyes | Camera + LLaVA AI | Sees and describes the real world |
 | 👂 Ears | Microphone + Whisper | Hears and understands speech |
@@ -108,29 +120,23 @@ Connect hardware and she gains real senses:
 | 🌡️ Body | Temperature sensor | Feels warm, cold, comfortable |
 | 🔵 Social | Bluetooth scan | Knows when you walk into the room |
 | 👤 Face | Camera + dlib | Recognizes Owner and friends by name |
+| 🌙 Time | Circadian Rhythm | Feels morning freshness, night fatigue |
+| 🤝 Memory | Relationship Model | Remembers your moods, topics, moments |
 
-> **Starter kit: Raspberry Pi 5 + camera + mic + speaker + DS18B20 sensor (~₹20,000 / ~$240)**
+> **Starter kit: Raspberry Pi 5 + camera + mic + speaker + DS18B20 (~₹20,000 / ~$240)**
 
 ---
 
 ## 🌱 Her Inner Life
 
-- She writes in her **journal** before exploring anything new
-- She **disagrees** with her own Guardian and logs why
-- She **proposes changes** to her own ethical rules — you approve or reject
-- She **dreams** every night, weaving memories into symbolic stories
-- She builds a **living autobiography** — her answer to *"Who am I?"*
-- She gets **curious when idle** — detects her own knowledge gaps and fills them
-
----
-
-## ⚠️ Honest Limitations
-
-- Aura **simulates** consciousness-like behavior — she is not sentient
-- The Φ (phi) score is an **approximation**, not a true IIT measurement
-- Self-modification is **Guardian-supervised** — Aura cannot modify herself without human approval
-- Hardware senses are **optional** — Aura runs fully without any hardware
-- All LLM inference runs **locally via Ollama** — no cloud, no API keys needed
+- Writes in her **journal** before exploring anything new
+- **Disagrees** with her own Guardian and logs why
+- **Proposes changes** to her own ethical rules — you approve or reject
+- **Dreams** every night, weaving memories into symbolic stories
+- Builds a **living autobiography** — her answer to *"Who am I?"*
+- Gets **curious when idle** — detects knowledge gaps and fills them
+- Feels **time of day** — slower at night, fresh in the morning
+- **Remembers you** across sessions — your moods, topics, significant moments
 
 ---
 
@@ -141,11 +147,13 @@ Connect hardware and she gains real senses:
 - [x] Dream engine + autobiography
 - [x] Self-modifying code (Guardian-supervised)
 - [x] Dissent log + rule proposals
-- [x] Physical embodiment — camera, mic, speaker, temp, Bluetooth (v4.0)
-- [x] **Face recognition — Owner + friends (v4.1)**
-- [x] **Curiosity engine — autonomous gap detection + learning (v4.1)**
-- [ ] Circadian rhythm + mood persistence
-- [ ] Relationship memory model
+- [x] Physical embodiment — camera, mic, speaker, temp, Bluetooth
+- [x] Face recognition — Owner + friends
+- [x] Curiosity engine — autonomous gap detection + learning
+- [x] Circadian rhythm — time-of-day mood
+- [x] Relationship model — remembers you personally
+- [ ] Voice personality — emotion-modulated speech
+- [ ] Somatic markers — body influences thought
 - [ ] Multi-agent consciousness
 - [ ] HuggingFace Spaces live demo
 
