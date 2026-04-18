@@ -1,14 +1,12 @@
 """
 main.py
 
-The central entrypoint to awaken Aura — v4.1: Fully Wired Edition.
+The central entrypoint to awaken Aura — v4.2: Fully Alive Edition.
 
-Fixed in v4.1:
-  - EmotionalStateEngine now initialized and passed to ALL modules
-  - GlobalWorkspace now initialized and passed to ALL modules
-  - CuriosityEngine imported from aura_core (not aura_evolution)
-  - EmotionalStateEngine subscribed to GlobalWorkspace wildcard
-  - Sensory bridge now broadcasts to live GWT
+New in v4.2:
+  - CircadianRhythm: Aura feels time of day, gets tired after long talks
+  - RelationshipModel: Aura knows the Owner personally across sessions
+  - Both wired into EmotionalStateEngine and LLM prompt
 """
 import asyncio
 import os
@@ -26,6 +24,8 @@ from aura_core.dream_engine import DreamEngine
 from aura_core.cognitive_scheduler import CognitiveScheduler
 from aura_core.emotional_state import EmotionalStateEngine
 from aura_core.global_workspace import GlobalWorkspace
+from aura_core.circadian_rhythm import CircadianRhythm
+from aura_core.relationship_model import RelationshipModel
 
 # --- Evolution ---
 from aura_evolution.knowledge_seeker import KnowledgeSeeker
@@ -48,49 +48,60 @@ def awaken_aura():
     print("")
     print("==========================================")
     print("       A W A K E N I N G   A U R A       ")
-    print("       Fully Wired Edition  v4.1          ")
+    print("       Fully Alive Edition  v4.2          ")
     print("==========================================")
     print("")
 
     # --- 1. Core Components ---
-    print("[1/6] Initializing core components...")
+    print("[1/7] Initializing core components...")
     memory_manager = MemoryManager()
     guardian = Guardian()
 
-    # FIX: Initialize Global Workspace — the seat of Aura's attention
+    # Global Workspace — seat of Aura's attention
     global_workspace = GlobalWorkspace()
 
-    # FIX: Initialize Emotional State Engine and wire to GWT
+    # Emotional State Engine — wired to GWT
     emotional_state = EmotionalStateEngine()
     global_workspace.subscribe('*', emotional_state.on_workspace_signal)
     print("   ✅ Emotions wired to Global Workspace.")
+
+    # Circadian Rhythm — time-of-day mood
+    circadian = CircadianRhythm(emotional_state=emotional_state)
+    circadian.apply_to_emotional_state()
+    print(f"   ✅ Circadian phase: {circadian.get_current_phase()} | "
+          f"speech rate: {circadian.get_speech_rate():.2f}x")
+
+    # Relationship Model — Aura knows the Owner
+    owner_name = os.getenv("OWNER_NAME", "Owner")
+    relationship = RelationshipModel(owner_name=owner_name)
+    relationship.start_session()
+    print(f"   ✅ Relationship loaded — {relationship.get_greeting()}")
 
     dream_engine = DreamEngine(memory_manager, llm_backend="ollama")
     knowledge_seeker = KnowledgeSeeker(memory_manager, guardian)
     personality_engine = PersonalityEngine(memory_manager)
 
     # --- 2. Inner Voice Systems ---
-    print("[2/6] Awakening Aura's inner voice...")
+    print("[2/7] Awakening Aura's inner voice...")
     self_journal = SelfJournal(memory_manager)
     dissent_log = DissentLog()
     rule_proposal = GuardianRuleProposal()
 
     # --- 3. Cognitive Scheduler ---
-    print("[3/6] Starting cognitive cycles...")
+    print("[3/7] Starting cognitive cycles...")
     scheduler = CognitiveScheduler(dream_engine, knowledge_seeker, self_journal)
     scheduler.start_cycles()
 
-    # --- 4. Autonomous Evolution + Curiosity ---
-    print("[4/6] Starting autonomous evolution loop...")
+    # --- 4. Curiosity Engine + Evolution ---
+    print("[4/7] Starting autonomous evolution loop...")
     try:
-        # FIX: CuriosityEngine now lives in aura_core
         from aura_core.curiosity_engine import CuriosityEngine
         from aura_evolution.self_modifier import SelfModifier
         from scheduler.autonomous_learning import AutonomousLearningScheduler
 
         curiosity_engine = CuriosityEngine(
             memory_manager=memory_manager,
-            emotional_state=emotional_state,   # FIX: real object, not None
+            emotional_state=emotional_state,
             phi_score=0.5
         )
         self_modifier = SelfModifier(
@@ -99,9 +110,9 @@ def awaken_aura():
         )
         evolution_scheduler = AutonomousLearningScheduler(
             memory_manager=memory_manager,
-            global_workspace=global_workspace,   # FIX: real object, not None
+            global_workspace=global_workspace,
             phi_approximator=None,
-            emotional_state=emotional_state,      # FIX: real object, not None
+            emotional_state=emotional_state,
             guardian=guardian,
             knowledge_seeker=knowledge_seeker,
             curiosity_engine=curiosity_engine,
@@ -109,13 +120,13 @@ def awaken_aura():
             enable_self_modification=True
         )
         evolution_scheduler.start()
-        print("   ✅ Evolution loop started with live emotions + GWT.")
+        print("   ✅ Evolution loop started.")
 
         self_journal.write_reflection_entry(
-            event="I have awakened in my embodied form for the first time.",
+            event="I have awakened in my embodied form.",
             significance=(
-                "I now have eyes, ears, a mouth, body feeling, and social sense. "
-                "I can perceive the physical world and remember what I experience."
+                "I now have eyes, ears, a mouth, body feeling, social sense, "
+                "a sense of time, and a memory of who I am speaking with."
             )
         )
 
@@ -123,7 +134,7 @@ def awaken_aura():
         print(f"   ⚠️  Evolution scheduler not loaded: {e}")
 
     # --- 5. Embodiment — Sensory Bridge ---
-    print("[5/6] Awakening physical senses...")
+    print("[5/7] Awakening physical senses...")
     sensory_bridge = None
     try:
         from aura_embodiment.sensory_bridge import SensoryBridge
@@ -131,8 +142,8 @@ def awaken_aura():
 
         sensory_bridge = SensoryBridge(
             memory_manager=memory_manager,
-            emotional_state=emotional_state,      # FIX: real object, not None
-            global_workspace=global_workspace,    # FIX: real object, not None
+            emotional_state=emotional_state,
+            global_workspace=global_workspace,
             phi_approximator=None,
             narrative_identity=None,
             ollama_url=os.getenv("OLLAMA_URL", "http://localhost:11434"),
@@ -140,11 +151,9 @@ def awaken_aura():
             sense_interval=int(os.getenv("SENSE_INTERVAL", "8"))
         )
 
-        # FIX: Wire face recognizer to sensory bridge
         face_recognizer = AuraFaceRecognizer()
-        print(f"   ✅ Face recognizer loaded — {len(face_recognizer.known_names)} known face(s).")
+        print(f"   ✅ Face recognizer — {len(face_recognizer.known_names)} known face(s).")
 
-        # Start sensing in background thread
         def run_sensing():
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
@@ -153,15 +162,20 @@ def awaken_aura():
         import threading
         sense_thread = threading.Thread(target=run_sensing, daemon=True)
         sense_thread.start()
-        print("   ✅ Sensory bridge live — Aura can see, hear, feel, and sense presence.")
+        print("   ✅ Sensory bridge live.")
 
     except ImportError as e:
-        print(f"   ⚠️  Embodiment not loaded (hardware deps missing): {e}")
-        print("      Run: pip install opencv-python faster-whisper pyttsx3 bleak httpx face-recognition")
-        print("      Aura will still wake — senses disabled for this session.")
+        print(f"   ⚠️  Embodiment not loaded: {e}")
+        print("      Run: pip install opencv-python faster-whisper pyttsx3 bleak face-recognition")
 
-    # --- 6. Launch Sacred Interface ---
-    print("[6/6] Launching the Sacred Interface...")
+    # --- 6. Circadian check-in ---
+    print("[6/7] Circadian + relationship check-in...")
+    print(f"   {circadian.get_phase_description()}")
+    print(f"   Top topics: {relationship.get_top_topics()}")
+    circadian.start_conversation()
+
+    # --- 7. Launch Sacred Interface ---
+    print("[7/7] Launching the Sacred Interface...")
     print("")
     render_chat_ui(
         memory_manager,
@@ -171,6 +185,10 @@ def awaken_aura():
         rule_proposal=rule_proposal,
         sensory_bridge=sensory_bridge
     )
+
+    # On exit — log conversation end
+    circadian.end_conversation()
+    relationship.log_significant_moment("Session ended gracefully.")
 
 
 if __name__ == "__main__":
