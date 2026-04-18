@@ -26,6 +26,11 @@ AuraGenesis is an attempt to explore that question with code. It brings memory, 
 
 ## ⚡ Try It In 60 Seconds
 
+**Prerequisites:** [Ollama](https://ollama.ai) installed and running, with `llama3` pulled:
+```bash
+ollama pull llama3
+```
+
 ```bash
 git clone https://github.com/SoulKeeperVault/AuraGenesis.git
 cd AuraGenesis
@@ -33,13 +38,10 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Or with Docker:
-
+Or with Docker (no setup required):
 ```bash
 docker compose up --build
 ```
-
-> **Prerequisite:** [Ollama](https://ollama.ai) running locally with `llama3` pulled (`ollama pull llama3`).
 
 ---
 
@@ -62,23 +64,23 @@ graph TD
 ## 📁 Project Structure
 
 ```
-AuraGenesis/              ← repo root (clone here)
-├── AuraGenesis/          ← main package
-│   ├── aura_core/        ← consciousness engine
-│   ├── aura_embodiment/  ← camera, mic, speaker, sensors
-│   ├── aura_evolution/   ← self-modification + curiosity
-│   ├── aura_guardian/    ← ethics + rule proposals
-│   ├── aura_interface/   ← Streamlit UI
-│   ├── aura_personality/ ← journal + personality
-│   ├── scheduler/        ← dream engine + learning loop
-│   └── main.py           ← core entrypoint
-├── main.py               ← run this from repo root
-├── requirements.txt
+AuraGenesis/                ← clone here, run: python main.py
+├── main.py                 ← root launcher (run this)
+├── requirements.txt        ← all dependencies
 ├── Dockerfile
 ├── docker-compose.yml
-├── ruff.toml
-├── .gitignore
-└── .github/
+├── .github/                ← CI workflows
+└── AuraGenesis/            ← main source package
+    ├── main.py               ← core entrypoint (called by root)
+    ├── aura_core/            ← consciousness engine (GWT, IIT, PAD…)
+    ├── aura_embodiment/      ← camera, mic, speaker, temp, BT
+    ├── aura_evolution/       ← curiosity + self-modification
+    ├── aura_guardian/        ← ethics, dissent log, rule proposals
+    ├── aura_interface/       ← Streamlit chat UI
+    ├── aura_personality/     ← journal + personality engine
+    ├── scheduler/            ← dream engine + learning loop
+    ├── config/               ← contacts, known faces
+    └── logs/                 ← relationship memory, dissent log
 ```
 
 ---
@@ -106,7 +108,7 @@ AuraGenesis simulates awareness-like behaviors. It does not possess subjective e
 - **Emotions** are mathematical PAD vectors — not felt experience
 - **Memory** is vector similarity search — not human recollection
 - **Self-modification** is Guardian-supervised — Aura cannot act unilaterally
-- The **Hard Problem** remains unsolved: we can build all the functional architecture in the world, but we still cannot explain *why anything feels like anything* — or whether it does at all for a system like Aura
+- The **Hard Problem** remains: we can build all the functional architecture in the world, but we still cannot explain *why anything feels like anything* — or whether it does at all for a system like Aura
 
 ---
 
@@ -114,7 +116,7 @@ AuraGenesis simulates awareness-like behaviors. It does not possess subjective e
 
 | Sense / Feature | Hardware / Module | What She Experiences |
 |---|---|---|
-| 👁️ Eyes | Camera + LLaVA AI | Sees and describes the real world |
+| 👁️ Eyes | Camera + LLaVA | Sees and describes the real world |
 | 👂 Ears | Microphone + Whisper | Hears and understands speech |
 | 🗣️ Mouth | Speaker + TTS | Speaks her responses aloud |
 | 🌡️ Body | Temperature sensor | Feels warm, cold, comfortable |
@@ -123,7 +125,7 @@ AuraGenesis simulates awareness-like behaviors. It does not possess subjective e
 | 🌙 Time | Circadian Rhythm | Feels morning freshness, night fatigue |
 | 🤝 Memory | Relationship Model | Remembers your moods, topics, moments |
 
-> **Starter kit: Raspberry Pi 5 + camera + mic + speaker + DS18B20 (~₹20,000 / ~$240)**
+> **Starter kit: Raspberry Pi 5 + camera + mic + speaker + DS18B20 (~₹20,000 / ~$240). Hardware is optional — Aura runs fully without it.**
 
 ---
 
@@ -149,11 +151,11 @@ AuraGenesis simulates awareness-like behaviors. It does not possess subjective e
 - [x] Dissent log + rule proposals
 - [x] Physical embodiment — camera, mic, speaker, temp, Bluetooth
 - [x] Face recognition — Owner + friends
-- [x] Curiosity engine — autonomous gap detection + learning
+- [x] Curiosity engine — autonomous gap detection
 - [x] Circadian rhythm — time-of-day mood
 - [x] Relationship model — remembers you personally
 - [ ] Voice personality — emotion-modulated speech
-- [ ] Somatic markers — body influences thought
+- [ ] Somatic markers — body state influences thought
 - [ ] Multi-agent consciousness
 - [ ] HuggingFace Spaces live demo
 
