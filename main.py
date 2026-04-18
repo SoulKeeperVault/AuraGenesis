@@ -1,15 +1,15 @@
-# AuraGenesis adjustments for EmotionalStateEngine import
+"""
+main.py — AuraGenesis root entrypoint
+Run: python main.py
+"""
+import sys
+from pathlib import Path
 
-# Original import:
-# from aura_personality.emotional_state import EmotionalState
+# Add AuraGenesis package to path
+sys.path.insert(0, str(Path(__file__).parent / "AuraGenesis"))
+sys.path.insert(0, str(Path(__file__).parent))
 
-# Updated import:
-from aura_core.emotional_state import EmotionalStateEngine
+from AuraGenesis.main import awaken_aura
 
-
-# Update all references from EmotionalState to EmotionalStateEngine
-
-# Example reference that needs to be updated:
-# emotional_state = EmotionalState()
-# Should be changed to:
-emotional_state = EmotionalStateEngine()
+if __name__ == "__main__":
+    awaken_aura()
