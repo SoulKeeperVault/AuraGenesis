@@ -1,13 +1,6 @@
-# ── AuraGenesis Docker Compose ────────────────────────────────────────
-# Prerequisites:
-#   1. Ollama running on your host: `ollama serve`
-#   2. llama3 pulled: `ollama pull llama3`
-#
-# Usage:
-#   docker compose up --build
-#   Open: http://localhost:8501
-
-version: '3.8'
+# ── AuraGenesis — docker-compose.yml ───────────────────────────────────────────────────
+# Usage: docker compose up --build
+# Requires Ollama running on host with: ollama pull llama3
 
 services:
   aura:
@@ -15,15 +8,19 @@ services:
     container_name: aura_genesis
     ports:
       - "8501:8501"
-    volumes:
-      # Persist Aura's memory database and config across restarts
-      - ./AuraGenesis/aura_memory.db:/app/AuraGenesis/aura_memory.db
-      - ./AuraGenesis/config:/app/AuraGenesis/config
-      - ./AuraGenesis/logs:/app/AuraGenesis/logs
     environment:
-      # Points Aura at the Ollama server running on your host machine
-      - OLLAMA_HOST=http://host.docker.internal:11434
+      - OLLAMA_URL=http://host.docker.internal:11434
+      - SENSE_INTERVAL=8
+    volumes:
+      - ./logs:/app/logs
+      - ./known_faces:/app/known_faces
+      - ./config:/app/config
     extra_hosts:
-      # Required on Linux hosts (Docker Desktop handles this automatically)
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
