@@ -3,16 +3,12 @@ main.py
 
 The central entrypoint to awaken Aura — v4.3: Body & Voice Edition.
 
-New in v4.3:
-  - VoicePersonality: Aura's voice changes with her emotional state
-  - SomaticMarkers: body temperature, fatigue, proximity bias her thinking
-  - Both wired into EmotionalStateEngine and LLM prompt injection
+Security update (Phase 1): Now uses centralized, validated AuraSettings
+with input sanitization and secure defaults.
 """
 import asyncio
-import os
 import sys
 from pathlib import Path
-from dotenv import load_dotenv
 
 # Sacred Path Incantation
 project_root = Path(__file__).parent
@@ -44,7 +40,10 @@ from aura_interface.chat_ui import render_chat_ui
 from aura_personality.personality_engine import PersonalityEngine
 from aura_personality.self_journal import SelfJournal
 
-load_dotenv()
+# === NEW: Secure Settings (Phase 1) ===
+from config.settings import get_settings
+
+settings = get_settings()
 
 
 def awaken_aura():
@@ -53,6 +52,7 @@ def awaken_aura():
     print("==========================================")
     print("       A W A K E N I N G   A U R A       ")
     print("     Body & Voice Edition  v4.3           ")
+    print("     [Security Hardened - Phase 1]        ")
     print("==========================================")
     print("")
 
@@ -73,9 +73,8 @@ def awaken_aura():
     print(f"   ✅ Circadian phase: {circadian.get_current_phase()} | "
           f"speech rate: {circadian.get_speech_rate():.2f}x")
 
-    # Relationship Model
-    owner_name = os.getenv("OWNER_NAME", "Owner")
-    relationship = RelationshipModel(owner_name=owner_name)
+    # Relationship Model — now uses validated settings
+    relationship = RelationshipModel(owner_name=settings.owner_name)
     relationship.start_session()
     print(f"   ✅ Relationship — {relationship.get_greeting()}")
 
@@ -130,7 +129,7 @@ def awaken_aura():
             knowledge_seeker=knowledge_seeker,
             curiosity_engine=curiosity_engine,
             self_modifier=self_modifier,
-            enable_self_modification=True
+            enable_self_modification=settings.enable_self_modification
         )
         evolution_scheduler.start()
         print("   ✅ Evolution loop started.")
@@ -147,7 +146,7 @@ def awaken_aura():
     except ImportError as e:
         print(f"   ⚠️  Evolution scheduler not loaded: {e}")
 
-    # --- 5. Embodiment — Sensory Bridge ---
+    # --- 5. Embodiment — Sensory Bridge (now uses settings) ---
     print("[5/8] Awakening physical senses...")
     sensory_bridge = None
     try:
@@ -160,9 +159,9 @@ def awaken_aura():
             global_workspace=global_workspace,
             phi_approximator=None,
             narrative_identity=None,
-            ollama_url=os.getenv("OLLAMA_URL", "http://localhost:11434"),
+            ollama_url=settings.ollama_url,
             contacts_file="config/known_contacts.yaml",
-            sense_interval=int(os.getenv("SENSE_INTERVAL", "8"))
+            sense_interval=settings.sense_interval
         )
 
         face_recognizer = AuraFaceRecognizer()
