@@ -1,8 +1,4 @@
 # ── AuraGenesis GitHub Actions CI ─────────────────────────────────────
-# Runs on every push and pull request to main.
-# Jobs:
-#   1. lint  — ruff linter (fast, no install of heavy deps)
-#   2. test  — pytest on the lightweight unit tests (no Ollama needed)
 
 name: CI
 
@@ -13,34 +9,40 @@ on:
     branches: [main]
 
 jobs:
-  lint:
-    name: Lint (ruff)
+  lint-type:
+    name: Lint + Type Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install ruff
-        run: pip install ruff
+      - name: Install tools
+        run: pip install ruff mypy pydantic pydantic-settings
       - name: Run ruff
-        run: ruff check AuraGenesis/ --ignore E501,F401
-        # E501 = line too long (fine for research code)
-        # F401 = unused imports (some are intentional lazy imports)
+        run: ruff check AuraGenesis/
+      - name: Run mypy
+        run: mypy AuraGenesis/ --strict --ignore-missing-imports
 
   test:
-    name: Unit Tests (pytest)
+    name: Tests + Coverage
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - name: Install lightweight deps only
+          python-version: ${{ matrix.python-version }}
+      - name: Install test deps
         run: |
-          pip install pytest pyyaml pydantic numpy
-          # Heavy deps (torch, chromadb, streamlit) skipped in CI
-          # Tests are written to not require them
-      - name: Run tests
+          pip install pytest pytest-cov pyyaml pydantic numpy
+      - name: Run tests with coverage
         working-directory: AuraGenesis
-        run: pytest tests/ -v --tb=short
+        run: pytest --cov=AuraGenesis --cov-report=xml --cov-report=term-missing
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
